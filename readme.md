@@ -1,3 +1,21 @@
+This follow-on project is based on the work of:
+mikec-w:  https://github.com/mikec-w/Blue-Pill-CAN-Test
+and
+Eto-Ten:  https://github.com/EtoTen/stm32_can_sim/tree/main
+
+Using  the Blue Pill CAN program Mikec created, I was able to modify the output to send 4  CAN messages on continuous loop to wake and keep alive Sync 3 and 4 devices.
+instead of a discreet CAN interface, one was used off the shelf (see the Eto-Ten git page for further instructions)
+This allows you to connect Forscan and make changes away from the vehicle.
+
+Messages sent are as follows:
+
+0x048,  0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0xE0, 0x00  // turn on C1MCA - this turned most units on
+0x044,  0x88, 0xC0, 0x0C, 0x10, 0x04, 0x00, 0x02, 0x00  //sync4 turn on
+0x3B3,  0x41, 0x00, 0x00, 0x00, 0x4c, 0x00, 0xE0, 0x00  // turn CGEA 1.3 - second option, seems to work better
+0x109,  0x00, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x28  // Accessory ON, Gear Park, Speed 0 - this needed or else the APIM will default to driving mode and will lock out many settings
+ 
+Original instructions:
+
 # Blue Pill CAN Test
 
 This project is a simple test harness for using the CAN BUS protocol with the STM32 Blue Pill
