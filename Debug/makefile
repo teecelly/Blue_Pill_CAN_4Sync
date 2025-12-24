@@ -1,5 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (13.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -11,7 +12,6 @@ RM := rm -rf
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
--include subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -28,58 +28,59 @@ endif
 
 -include ../makefile.defs
 
-BUILD_ARTIFACT_NAME := Blue-Pill-CAN-Test
+OPTIONAL_TOOL_DEPS := \
+$(wildcard ../makefile.defs) \
+$(wildcard ../makefile.init) \
+$(wildcard ../makefile.targets) \
+
+
+BUILD_ARTIFACT_NAME := Blue_pill_Can
 BUILD_ARTIFACT_EXTENSION := elf
-BUILD_ARTIFACT_PREFIX := 
-BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME).$(BUILD_ARTIFACT_EXTENSION)
+BUILD_ARTIFACT_PREFIX :=
+BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Blue-Pill-CAN-Test.elf \
+Blue_pill_Can.elf \
+
+MAP_FILES += \
+Blue_pill_Can.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Blue-Pill-CAN-Test.list \
-
-OBJCOPY_BIN += \
-Blue-Pill-CAN-Test.bin \
+Blue_pill_Can.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Blue-Pill-CAN-Test.elf secondary-outputs
+main-build: Blue_pill_Can.elf secondary-outputs
 
 # Tool invocations
-Blue-Pill-CAN-Test.elf: $(OBJS) $(USER_OBJS) C:\Users\mcw\STM32CubeIDE\workspace\Blue-Pill-CAN-Test\STM32F103C8TX_FLASH.ld
-	arm-none-eabi-gcc -o "Blue-Pill-CAN-Test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\mcw\STM32CubeIDE\workspace\Blue-Pill-CAN-Test\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Blue-Pill-CAN-Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Blue_pill_Can.elf Blue_pill_Can.map: $(OBJS) $(USER_OBJS) C:\Users\teece\git\Blue-Pill-CAN-Test\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Blue_pill_Can.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\teece\git\Blue-Pill-CAN-Test\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Blue_pill_Can.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-default.size.stdout: $(EXECUTABLES)
+default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-size  $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Blue-Pill-CAN-Test.list: $(EXECUTABLES)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Blue-Pill-CAN-Test.list"
-	@echo 'Finished building: $@'
-	@echo ' '
-
-Blue-Pill-CAN-Test.bin: $(EXECUTABLES)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Blue-Pill-CAN-Test.bin"
+Blue_pill_Can.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Blue_pill_Can.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) *
+	-$(RM) Blue_pill_Can.elf Blue_pill_Can.list Blue_pill_Can.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
@@ -88,7 +89,6 @@ fail-specified-linker-script-missing:
 warn-no-linker-script-specified:
 	@echo 'Warning: No linker script specified. Check the linker settings in the build configuration.'
 
-.PHONY: all clean dependents fail-specified-linker-script-missing warn-no-linker-script-specified
-.SECONDARY:
+.PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified
 
 -include ../makefile.targets

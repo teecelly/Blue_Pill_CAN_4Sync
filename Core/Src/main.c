@@ -122,27 +122,45 @@ int main(void)
   HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
 
 
-  a = 55;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+      // Message 1: sync4 turn on
+      pHeader.StdId = 0x044;
+      pHeader.DLC = 8;
+      uint8_t data1[] = {0x88, 0xC0, 0x0C, 0x10, 0x04, 0x00, 0x02, 0x00};
+      HAL_CAN_AddTxMessage(&hcan, &pHeader, data1, &pTxMailbox);
+
+      // Message 2: turn CGEA 1.3
+      pHeader.StdId = 0x3B3;
+      pHeader.DLC = 8;
+      uint8_t data2[] = {0x41, 0x00, 0x00, 0x00, 0x4C, 0x00, 0xE0, 0x00};
+      HAL_CAN_AddTxMessage(&hcan, &pHeader, data2, &pTxMailbox);
+
+      // Message 3: Accessory ON, Gear Park, Speed 0
+      pHeader.StdId = 0x109;
+      pHeader.DLC = 8;
+      uint8_t data3[] = {0x00, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x28};
+      HAL_CAN_AddTxMessage(&hcan, &pHeader, data3, &pTxMailbox);
+
+      // Message 4: sync turn on
+      pHeader.StdId = 0x048;
+      pHeader.DLC = 8;
+      uint8_t data4[] = {0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0xE0, 0x00};
+      HAL_CAN_AddTxMessage(&hcan, &pHeader, data4, &pTxMailbox);
+
+      // Status feedback
+      HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+      HAL_UART_Transmit(&huart2, (uint8_t *)"CAN Messages Sent\r\n", 19U, 10U);
+
+      // Wait 100ms before repeating
+      HAL_Delay(100);
+
     /* USER CODE END WHILE */
-	  //Note CAN mode is currently LOOPBACK so Message is sent and received on same board
-
-	  // Send a CAN message (should trigger interrupt!)
-	  HAL_CAN_AddTxMessage(&hcan, &pHeader, &a, &pTxMailbox);
-	  //Having returned from interrupt, wait a little
-	  delay(100000);
-	  //Turn LED off, wait a little more then LOOP.
-	  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-	  delay(5000000);
-
-	  //Debug console
-	  HAL_UART_Transmit(&huart2, (uint8_t *)"Hello World!\r\n", 15U, 100U);
-	  /* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
