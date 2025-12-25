@@ -4,14 +4,15 @@ and
 Eto-Ten:  https://github.com/EtoTen/stm32_can_sim/tree/main
 
 Using  the Blue Pill CAN program Mikec created, I was able to modify the output to send 4  CAN messages on continuous loop to wake and keep alive Sync 3 and 4 devices.
-instead of a discreet CAN interface, one was used off the shelf (see the Eto-Ten git page for further instructions)
-This allows you to connect Forscan and make changes away from the vehicle.
+instead of a discreet CAN interface, one was used off the shelf (see the Eto-Ten git page for further instructions) The circuit connects are the same.  
+Only thing not shown is to add a 120 ohm resistor across the CAN L and H output pins.  And for Sync 4 devices, to disconnect pind 53 and 54 to APIM and connect 53 to pin 19 then 54 to 20.
+This allows you to connect Forscan and make changes away from the vehicle.  It is easy for a novice to compile and flash using only STM32IDE tools.
 
 Messages sent are as follows:
 
 0x048,  0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0xE0, 0x00  // turn on C1MCA - this turned most units on
 0x044,  0x88, 0xC0, 0x0C, 0x10, 0x04, 0x00, 0x02, 0x00  //sync4 turn on
-0x3B3,  0x41, 0x00, 0x00, 0x00, 0x4c, 0x00, 0xE0, 0x00  // turn CGEA 1.3 - second option, seems to work better
+0x3B3,  0x41, 0x00, 0x00, 0x00, 0x4c, 0x00, 0xE0, 0x00  // turn CGEA 1.3 - 
 0x109,  0x00, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x28  // Accessory ON, Gear Park, Speed 0 - this needed or else the APIM will default to driving mode and will lock out many settings
  
 Original instructions:
